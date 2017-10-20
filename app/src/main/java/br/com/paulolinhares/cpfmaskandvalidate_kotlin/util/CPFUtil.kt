@@ -1,7 +1,6 @@
 package br.com.paulolinhares.cpfmaskandvalidate_kotlin.util
 
-import android.util.Log
-import android.widget.Toast
+
 
 /**
  * Created by paulolinhares on 20/10/17.
@@ -10,7 +9,6 @@ class CPFUtil{
 
     companion object {
         fun validateCpf(cpf: String): Boolean {
-
 
             val cpfClean = cpf.replace(".", "").replace("-", "")
 
@@ -36,7 +34,7 @@ class CPFUtil{
                 i++
             }
 
-            i = 0;
+            i = 0
             while (i < 9){
                 dv1 += cpfArray[i] * (i+1)
                 i++
@@ -52,14 +50,11 @@ class CPFUtil{
             dv2 = dv2 % 11
             cpfArray[10] = dv2
 
-            if (dv1 > 9)
-                cpfArray[9] = 0
-            if (dv2 > 9)
-                cpfArray[10] = 0
+            if (dv1 > 9) cpfArray[9] = 0
+            if (dv2 > 9) cpfArray[10] = 0
 
             if (cpfClean.substring(9, 10).toInt() != cpfArray[9] || cpfClean.substring(10, 11).toInt() != cpfArray[10])
                 return false
-
 
             return true
         }
