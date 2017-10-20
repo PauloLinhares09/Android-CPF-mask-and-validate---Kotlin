@@ -20,10 +20,10 @@ class MainActivity : AppCompatActivity() {
 
 
         fab.setOnClickListener { view ->
-            CPFUtil.validateCpf(etCpf.text.toString())
-
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
+            if (CPFUtil.validateCpf(etCpf.text.toString()))
+                Snackbar.make(view, "CPF valid", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            else
+                Snackbar.make(view, "CPF invalid", Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }
     }
 
