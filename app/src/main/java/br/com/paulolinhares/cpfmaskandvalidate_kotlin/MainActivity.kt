@@ -2,8 +2,10 @@ package br.com.paulolinhares.cpfmaskandvalidate_kotlin
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.View
 import br.com.paulolinhares.cpfmaskandvalidate_kotlin.util.CPFUtil
 import br.com.paulolinhares.cpfmaskandvalidate_kotlin.util.Mask
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,10 +25,21 @@ class MainActivity : AppCompatActivity() {
 
         fab.setOnClickListener { view ->
             if (CPFUtil.validateCpf(etCpf.text.toString()))
-                Snackbar.make(view, "CPF valid", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                showSnackFeedback("CPF valid", true, view)
             else
-                Snackbar.make(view, "CPF invalid", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                showSnackFeedback("CPF Invalid", false, view)
         }
+    }
+
+    fun showSnackFeedback(message : String, isValid : Boolean, view : View){
+        val snackbar : Snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+        var v : View = snackbar.view
+        if (isValid)
+            v.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_green_dark))
+        else
+            v.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_red_dark))
+
+        snackbar.show()
     }
 
 
