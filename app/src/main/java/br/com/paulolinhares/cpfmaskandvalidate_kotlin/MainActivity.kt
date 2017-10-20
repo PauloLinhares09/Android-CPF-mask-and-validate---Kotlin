@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import br.com.paulolinhares.cpfmaskandvalidate_kotlin.util.CPFUtil
+import br.com.paulolinhares.cpfmaskandvalidate_kotlin.util.Mask
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
 
+        etCpf.addTextChangedListener(Mask.mask("###.###.###-##", etCpf))
 
 
         fab.setOnClickListener { view ->
