@@ -8,8 +8,8 @@ package br.com.paulolinhares.cpfmaskandvalidate_kotlin.util
 class CPFUtil{
 
     companion object {
-        fun validateCpf(cpf: String): Boolean {
 
+        fun myValidateCPF(cpf : String) : Boolean{
             val cpfClean = cpf.replace(".", "").replace("-", "")
 
             //## check if size is eleven
@@ -18,42 +18,57 @@ class CPFUtil{
 
             //## check if is number
             try {
-               val number  = cpfClean.toLong()
+                val number  = cpfClean.toLong()
             }catch (e : Exception){
                 return false
             }
 
             //continue
-            val cpfArray = IntArray(11)
-            var dv1 = 0
-            var dv2 = 0
+            var dvCurrent10 = cpfClean.substring(9,10).toInt()
+            var dvCurrent11= cpfClean.substring(10,11).toInt()
 
-            var i : Int = 0
-            while (i < 11){
-                cpfArray[i] = cpfClean.substring(i, i+1).toInt()
-                i++
+            //the sum of the nine first digits determines the tenth digit
+            val cpfNineFirst = IntArray(9)
+            var i = 9
+            while (i > 0 ) {
+                cpfNineFirst[i-1] = cpfClean.substring(i-1, i).toInt()
+                i--
             }
-
-            i = 0
-            while (i < 9){
-                dv1 += cpfArray[i] * (i+1)
-                i++
+            //multiple the nine digits for your weights: 10,9..2
+            var sumProductNine = IntArray(9)
+            var weight = 10
+            var position = 0
+            while (weight >= 2){
+                sumProductNine[position] = weight * cpfNineFirst[position]
+                weight--
+                position++
             }
-            dv1 = dv1 % 11
-            cpfArray[9] = dv1
+            //Verify the nineth digit
+            var dvForTenthDigit = sumProductNine.sum() % 11
+            dvForTenthDigit = 11 - dvForTenthDigit //rule for tenth digit
+            if(dvForTenthDigit > 9)
+                dvForTenthDigit = 0
+            if (dvForTenthDigit != dvCurrent10)
+                return false
 
-            i = 0
-            while (i < 10){
-                dv2 += cpfArray[i] * i
-                i++
+            //### verify tenth digit
+            var cpfTenFirst = cpfNineFirst.copyOf(10)
+            cpfTenFirst[9] = dvCurrent10
+            //multiple the nine digits for your weights: 10,9..2
+            var sumProductTen = IntArray(10)
+            var w = 11
+            var p = 0
+            while (w >= 2){
+                sumProductTen[p] = w * cpfTenFirst[p]
+                w--
+                p++
             }
-            dv2 = dv2 % 11
-            cpfArray[10] = dv2
-
-            if (dv1 > 9) cpfArray[9] = 0
-            if (dv2 > 9) cpfArray[10] = 0
-
-            if (cpfClean.substring(9, 10).toInt() != cpfArray[9] || cpfClean.substring(10, 11).toInt() != cpfArray[10])
+            //Verify the nineth digit
+            var dvForeleventhDigit = sumProductTen.sum() % 11
+            dvForeleventhDigit = 11 - dvForeleventhDigit //rule for tenth digit
+            if(dvForeleventhDigit > 9)
+                dvForeleventhDigit = 0
+            if (dvForeleventhDigit != dvCurrent11)
                 return false
 
             return true

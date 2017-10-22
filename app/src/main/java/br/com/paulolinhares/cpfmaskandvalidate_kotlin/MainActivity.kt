@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
 
         fab.setOnClickListener { view ->
-            if (CPFUtil.validateCpf(etCpf.text.toString()))
+            if (CPFUtil.myValidateCPF(etCpf.text.toString()))
                 showSnackFeedback("CPF valid", true, view)
             else
                 showSnackFeedback("CPF Invalid", false, view)
